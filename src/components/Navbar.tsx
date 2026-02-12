@@ -38,18 +38,9 @@ const Navbar = () => {
                         <>
                             <Link href={'/dashboard'}>
                                 <button className="h-10 rounded-md bg-primary-50 px-4 py-2 text-sm font-medium text-primary-500 transition-all hover:bg-primary-100">
-                                    📊 Dashboard
+                                    Dashboard
                                 </button>
                             </Link>
-                            <span className="text-sm text-gray-700 font-medium max-w-[150px] truncate">
-                                {user.name || user.email}
-                            </span>
-                            <button 
-                                onClick={handleLogout}
-                                className="h-10 rounded-md bg-red-500 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-red-600 active:bg-red-700 whitespace-nowrap"
-                            >
-                                Sign out
-                            </button>
                         </>
                     ) : !isLoading ? (
                         <>

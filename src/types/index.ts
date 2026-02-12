@@ -11,7 +11,7 @@ export type Book = {
 
 export type Author = {
     name: string;
-    _id?: string;
+    _id: string;
 };
 
 export type User = {
