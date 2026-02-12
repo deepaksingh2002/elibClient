@@ -12,7 +12,7 @@ const BookCard = ({ book }: { book: Book }) => {
                 width={0}
                 height={0}
                 sizes="100vw"
-                style={{ width: 'auto', height: '12rem' }}
+                style={{ width: '50%', height: '12rem' }}
             />
             <div>
                 <h2 className="line-clamp-2 text-xl font-bold text-primary-600 text-balance">

@@ -1,27 +1,30 @@
-import React from 'react';
 import Image from 'next/image';
+import { notFound } from 'next/navigation';
 import { Book } from '../../../types';
 import DownloadButton from './components/DownloadButton';
 
-const SingleBookPage = async ({ params }: { params: { bookId: string } }) => {
-    console.log('params', params);
+type Props = {
+    params: Promise<{ bookId: string }>;
+};
+
+const SingleBookPage = async ({ params }: Props) => {
+    const { bookId } = await params;
+    
     let book: Book | null = null;
     try {
-        const response = await fetch(`${process.env.BACKEND_URL}/books/${params.bookId}`, {
-            next: {
-                revalidate: 3600,
-            },
+        const response = await fetch(`${process.env.BACKEND_URL}/books/${bookId}`, {
+            next: { revalidate: 3600 },
         });
         if (!response.ok) {
-            throw new Error('Error fetching book');
+            notFound();
         }
         book = await response.json();
-    } catch (err: any) {
-        throw new Error('Error fetching book');
+    } catch (err) {
+        notFound();
     }
 
     if (!book) {
-        throw new Error('Book not found');
+        notFound();
     }
 
     return (
@@ -36,11 +39,11 @@ const SingleBookPage = async ({ params }: { params: { bookId: string } }) => {
                 <Image
                     src={book.coverImage}
                     alt={book.title}
-                    className="rounded-md border"
-                    height={0}
-                    width={0}
-                    sizes="100vw"
-                    style={{ width: 'auto', height: 'auto' }}
+                    className="rounded-md border max-h-[600px] w-auto"
+                    height={600}
+                    width={400}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    priority
                 />
             </div>
         </div>
