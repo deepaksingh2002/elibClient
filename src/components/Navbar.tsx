@@ -1,7 +1,26 @@
+"use client";
+
 import Link from 'next/link';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { getStoredUser, logoutUser } from '@/lib/api';
+import { useRouter } from 'next/navigation';
+import { User } from '@/types';
 
 const Navbar = () => {
+    const [user, setUser] = useState<User | null>(null);
+    const router = useRouter();
+
+    useEffect(() => {
+        const storedUser = getStoredUser();
+        setUser(storedUser);
+    }, []);
+
+    const handleLogout = () => {
+        logoutUser();
+        setUser(null);
+        router.push('/');
+    };
+
     return (
         <nav className="border-b sticky top-0 bg-white z-50">
             <div className="max-w-7xl mx-auto flex items-center justify-between py-4 px-5">
@@ -19,12 +38,37 @@ const Navbar = () => {
                     </Link>
                 </div>
                 <div className="flex items-center gap-4">
-                    <button className="h-10 rounded-md border border-primary-500 px-4 py-2 text-sm font-medium text-primary-500 transition-all hover:border-primary-600 hover:bg-primary-50 active:bg-primary-100">
-                        Sign in
-                    </button>
-                    <button className="h-10 rounded-md bg-primary-500 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-primary-600 active:bg-primary-700">
-                        Sign up
-                    </button>
+                    {user ? (
+                        <>
+                            <Link href={'/dashboard'}>
+                                <button className="h-10 rounded-md bg-primary-50 px-4 py-2 text-sm font-medium text-primary-500 transition-all hover:bg-primary-100">
+                                    📊 Dashboard
+                                </button>
+                            </Link>
+                            <span className="text-sm text-gray-700 font-medium">
+                                {user.name || user.email}
+                            </span>
+                            <button 
+                                onClick={handleLogout}
+                                className="h-10 rounded-md bg-red-500 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-red-600 active:bg-red-700"
+                            >
+                                Sign out
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <Link href={'/login'}>
+                                <button className="h-10 rounded-md border border-primary-500 px-4 py-2 text-sm font-medium text-primary-500 transition-all hover:border-primary-600 hover:bg-primary-50 active:bg-primary-100">
+                                    Sign in
+                                </button>
+                            </Link>
+                            <Link href={'/register'}>
+                                <button className="h-10 rounded-md bg-primary-500 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-primary-600 active:bg-primary-700">
+                                    Sign up
+                                </button>
+                            </Link>
+                        </>
+                    )}
                 </div>
             </div>
         </nav>
