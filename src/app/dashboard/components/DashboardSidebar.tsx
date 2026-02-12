@@ -29,12 +29,10 @@ const DashboardSidebar = ({
     {
       id: "books",
       label: "My Books",
-      icon: "📚",
     },
     {
       id: "profile",
       label: "Profile Settings",
-      icon: "⚙️",
     },
   ];
 
@@ -76,7 +74,6 @@ const DashboardSidebar = ({
                 : "text-gray-600 hover:bg-gray-50"
             }`}
           >
-            <span className="text-xl">{item.icon}</span>
             <span>{item.label}</span>
           </button>
         ))}
@@ -88,7 +85,6 @@ const DashboardSidebar = ({
           onClick={handleLogout}
           className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition-all font-medium"
         >
-          <span className="text-xl">🚪</span>
           <span>Sign Out</span>
         </button>
       </div>
@@ -97,7 +93,6 @@ const DashboardSidebar = ({
       <div className="p-4 border-t border-gray-200">
         <Link href="/">
           <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 transition-all font-medium">
-            <span className="text-xl">🏠</span>
             <span>Back to Home</span>
           </button>
         </Link>
