@@ -18,6 +18,7 @@ const UserBooks = ({ user }: UserBooksProps) => {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [editingBook, setEditingBook] = useState<Book | null>(null);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   useEffect(() => {
     fetchUserBooks();
@@ -38,9 +39,13 @@ const UserBooks = ({ user }: UserBooksProps) => {
   const handleDeleteBook = async (bookId: string) => {
     if (!confirm("Are you sure you want to delete this book?")) return;
 
+    setError("");
+    setSuccess("");
     const result = await deleteBook(bookId);
     if (result.success) {
       setBooks(books.filter((b) => b._id !== bookId));
+      setSuccess("Book deleted successfully");
+      setTimeout(() => setSuccess(""), 3000);
     } else {
       setError(result.message || "Failed to delete book");
     }
@@ -48,11 +53,15 @@ const UserBooks = ({ user }: UserBooksProps) => {
 
   const handleBookUploaded = () => {
     setShowUploadModal(false);
+    setSuccess("Book uploaded successfully");
+    setTimeout(() => setSuccess(""), 3000);
     fetchUserBooks();
   };
 
   const handleBookUpdated = () => {
     setEditingBook(null);
+    setSuccess("Book updated successfully");
+    setTimeout(() => setSuccess(""), 3000);
     fetchUserBooks();
   };
 
@@ -68,6 +77,13 @@ const UserBooks = ({ user }: UserBooksProps) => {
           <span>Upload New Book</span>
         </button>
       </div>
+
+      {/* Success Message */}
+      {success && (
+        <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+          <p className="text-green-700">{success}</p>
+        </div>
+      )}
 
       {/* Error Message */}
       {error && (

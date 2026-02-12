@@ -255,6 +255,7 @@ export async function createBook(
     formData.append("title", payload.title);
     formData.append("description", payload.description);
     
+    // Append files directly - File objects already have proper blob handling
     if (payload.coverImage) {
       formData.append("coverImage", payload.coverImage);
     }
@@ -262,7 +263,15 @@ export async function createBook(
       formData.append("file", payload.file);
     }
 
-    console.log("Creating book...");
+    console.log("Uploading book with FormData fields:");
+    for (const [key, value] of formData.entries()) {
+      if (value instanceof File) {
+        console.log(`  ${key}: File(${value.name}, ${value.type}, ${value.size} bytes)`);
+      } else {
+        console.log(`  ${key}: ${value}`);
+      }
+    }
+
     const response = await fetch(`${BOOKS_API_URL}/`, {
       method: "POST",
       headers: {
@@ -271,26 +280,39 @@ export async function createBook(
       body: formData,
     });
 
-    const data = await response.json();
-    console.log("Create book response:", data);
+    console.log("Upload response status:", response.status);
+    
+    let data;
+    try {
+      const text = await response.text();
+      data = text ? JSON.parse(text) : { success: false, message: "Empty response" };
+    } catch (parseError) {
+      console.error("Failed to parse response:", parseError);
+      return {
+        success: false,
+        message: "Invalid response from server",
+      };
+    }
+
+    console.log("Upload response:", data);
 
     if (!response.ok) {
       return {
         success: false,
-        message: data.message || "Failed to create book",
+        message: data.message || data.error || "Failed to create book",
       };
     }
 
     return {
       success: true,
       message: data.message || "Book created successfully",
-      book: data.book,
+      book: data.book || data,
     };
   } catch (error) {
     console.error("Create book error:", error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : "An error occurred",
+      message: error instanceof Error ? error.message : "An error occurred while uploading the book",
     };
   }
 }
@@ -311,8 +333,14 @@ export async function updateBook(
     const formData = new FormData();
     if (payload.title) formData.append("title", payload.title);
     if (payload.description) formData.append("description", payload.description);
-    if (payload.coverImage) formData.append("coverImage", payload.coverImage);
-    if (payload.file) formData.append("file", payload.file);
+    if (payload.coverImage) {
+      const coverImageBlob = new Blob([payload.coverImage], { type: payload.coverImage.type });
+      formData.append("coverImage", coverImageBlob, payload.coverImage.name);
+    }
+    if (payload.file) {
+      const fileBlob = new Blob([payload.file], { type: payload.file.type });
+      formData.append("file", fileBlob, payload.file.name);
+    }
 
     console.log("Updating book...");
     const response = await fetch(`${BOOKS_API_URL}/${bookId}`, {
@@ -323,20 +351,34 @@ export async function updateBook(
       body: formData,
     });
 
-    const data = await response.json();
-    console.log("Update book response:", data);
+    console.log("Update book response status:", response.status);
+    
+    let data;
+    try {
+      const text = await response.text();
+      console.log("Response text:", text);
+      data = JSON.parse(text);
+    } catch (parseError) {
+      console.error("Failed to parse response:", parseError);
+      return {
+        success: false,
+        message: "Invalid response from server",
+      };
+    }
+
+    console.log("Update book response data:", data);
 
     if (!response.ok) {
       return {
         success: false,
-        message: data.message || "Failed to update book",
+        message: data.message || data.error || "Failed to update book",
       };
     }
 
     return {
       success: true,
       message: data.message || "Book updated successfully",
-      book: data.book,
+      book: data.book || data,
     };
   } catch (error) {
     console.error("Update book error:", error);
@@ -357,7 +399,7 @@ export async function deleteBook(bookId: string): Promise<BookResponse> {
       };
     }
 
-    console.log("Deleting book...");
+    console.log("Deleting book with ID:", bookId);
     const response = await fetch(`${BOOKS_API_URL}/${bookId}`, {
       method: "DELETE",
       headers: {
@@ -365,13 +407,34 @@ export async function deleteBook(bookId: string): Promise<BookResponse> {
       },
     });
 
-    const data = await response.json();
-    console.log("Delete book response:", data);
+    console.log("Delete book response status:", response.status);
+    
+    let data;
+    try {
+      const text = await response.text();
+      console.log("Response text:", text);
+      data = text ? JSON.parse(text) : { success: true };
+    } catch (parseError) {
+      console.error("Failed to parse response:", parseError);
+      // If we can't parse but status is ok, consider it success
+      if (response.ok) {
+        return {
+          success: true,
+          message: "Book deleted successfully",
+        };
+      }
+      return {
+        success: false,
+        message: "Invalid response from server",
+      };
+    }
+
+    console.log("Delete book response data:", data);
 
     if (!response.ok) {
       return {
         success: false,
-        message: data.message || "Failed to delete book",
+        message: data.message || data.error || "Failed to delete book",
       };
     }
 
@@ -383,7 +446,7 @@ export async function deleteBook(bookId: string): Promise<BookResponse> {
     console.error("Delete book error:", error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : "An error occurred",
+      message: error instanceof Error ? error.message : "An error occurred while deleting the book",
     };
   }
 }
