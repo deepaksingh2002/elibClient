@@ -7,9 +7,10 @@ interface BookCardProps {
   book: Book;
   onEdit: () => void;
   onDelete: () => void;
+  isOwner?: boolean;
 }
 
-const BookCard = ({ book, onEdit, onDelete }: BookCardProps) => {
+const BookCard = ({ book, onEdit, onDelete, isOwner = false }: BookCardProps) => {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
       {/* Cover Image */}
@@ -23,7 +24,7 @@ const BookCard = ({ book, onEdit, onDelete }: BookCardProps) => {
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary-100 to-primary-200">
-            <span className="text-4xl">📖</span>
+            <span className="text-gray-400">No Cover Image</span>
           </div>
         )}
       </div>
@@ -43,20 +44,22 @@ const BookCard = ({ book, onEdit, onDelete }: BookCardProps) => {
         </p>
 
         {/* Actions */}
-        <div className="flex gap-2">
-          <button
-            onClick={onEdit}
-            className="flex-1 py-2 px-3 bg-primary-50 text-primary-600 rounded hover:bg-primary-100 transition-all font-medium text-sm"
-          >
-            ✏️ Edit
-          </button>
-          <button
-            onClick={onDelete}
-            className="flex-1 py-2 px-3 bg-red-50 text-red-600 rounded hover:bg-red-100 transition-all font-medium text-sm"
-          >
-            🗑️ Delete
-          </button>
-        </div>
+        {isOwner && (
+          <div className="flex gap-2">
+            <button
+              onClick={onEdit}
+              className="flex-1 py-2 px-3 bg-primary-50 text-primary-600 rounded hover:bg-primary-100 transition-all font-medium text-sm"
+            >
+              Edit
+            </button>
+            <button
+              onClick={onDelete}
+              className="flex-1 py-2 px-3 bg-red-50 text-red-600 rounded hover:bg-red-100 transition-all font-medium text-sm"
+            >
+              Delete
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
