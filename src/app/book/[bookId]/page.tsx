@@ -10,7 +10,7 @@ export async function generateMetadata({
     params: { bookId: string };
 }): Promise<Metadata> {
     try {
-        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000/api/v1';
+        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000/api/v1';
         const response = await fetch(`${backendUrl}/books/${params.bookId}`, {
             next: { revalidate: 3600 },
         });
@@ -32,7 +32,7 @@ export async function generateMetadata({
 const SingleBookPage = async ({ params }: { params: { bookId: string } }) => {
     let book: Book | null = null;
     try {
-        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000/api/v1';
+        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000/api/v1';
         const response = await fetch(`${backendUrl}/books/${params.bookId}`, {
             next: {
                 revalidate: 3600,
