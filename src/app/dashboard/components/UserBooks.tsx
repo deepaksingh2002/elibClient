@@ -63,7 +63,7 @@ const UserBooks = ({ user }: UserBooksProps) => {
           onClick={() => setShowUploadModal(true)}
           className="flex items-center gap-2 bg-primary-500 text-white px-6 py-3 rounded-lg hover:bg-primary-600 transition-all font-medium"
         >
-          <span>➕</span>
+          <span>+</span>
           <span>Upload New Book</span>
         </button>
       </div>
@@ -87,7 +87,6 @@ const UserBooks = ({ user }: UserBooksProps) => {
           </div>
         ) : books.length === 0 ? (
           <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
-            <div className="text-5xl mb-4">📚</div>
             <h3 className="text-2xl font-bold text-gray-900 mb-2">
               No books yet
             </h3>
@@ -98,7 +97,7 @@ const UserBooks = ({ user }: UserBooksProps) => {
               onClick={() => setShowUploadModal(true)}
               className="inline-flex items-center gap-2 bg-primary-500 text-white px-6 py-3 rounded-lg hover:bg-primary-600 transition-all font-medium"
             >
-              <span>➕</span>
+              <span>+</span>
               <span>Upload Your First Book</span>
             </button>
           </div>
@@ -108,6 +107,7 @@ const UserBooks = ({ user }: UserBooksProps) => {
               <BookCard
                 key={book._id}
                 book={book}
+                isOwner={book.author?._id === user._id}
                 onEdit={() => setEditingBook(book)}
                 onDelete={() => handleDeleteBook(book._id)}
               />
