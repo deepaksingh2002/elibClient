@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { Book } from "@/types";
+import { Edit2, Trash2 } from "lucide-react";
 
 interface BookCardProps {
   book: Book;
@@ -48,14 +49,16 @@ const BookCard = ({ book, onEdit, onDelete, isOwner = false }: BookCardProps) =>
           <div className="flex gap-2">
             <button
               onClick={onEdit}
-              className="flex-1 py-2 px-3 bg-primary-50 text-primary-600 rounded hover:bg-primary-100 transition-all font-medium text-sm"
+              className="flex-1 py-2 px-3 bg-primary-50 text-primary-600 rounded hover:bg-primary-100 transition-all font-medium text-sm flex items-center justify-center gap-2"
             >
+              <Edit2 size={16} />
               Edit
             </button>
             <button
               onClick={onDelete}
-              className="flex-1 py-2 px-3 bg-red-50 text-red-600 rounded hover:bg-red-100 transition-all font-medium text-sm"
+              className="flex-1 py-2 px-3 bg-red-50 text-red-600 rounded hover:bg-red-100 transition-all font-medium text-sm flex items-center justify-center gap-2"
             >
+              <Trash2 size={16} />
               Delete
             </button>
           </div>

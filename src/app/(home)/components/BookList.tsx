@@ -20,7 +20,6 @@ const BookList = async () => {
         if (!Array.isArray(books) || books.length === 0) {
             return (
                 <div className="text-center py-16 max-w-7xl mx-auto mb-10">
-                    <div className="text-6xl mb-4">📚</div>
                     <h3 className="text-2xl font-bold text-gray-900 mb-2">No books available yet</h3>
                     <p className="text-gray-600">Check back soon for new books to explore!</p>
                 </div>
@@ -28,7 +27,7 @@ const BookList = async () => {
         }
 
         return (
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-3 max-w-7xl mx-auto mb-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mb-10">
                 {books.map((book: Book) => (
                     <BookCard key={book._id} book={book} />
                 ))}
@@ -40,7 +39,6 @@ const BookList = async () => {
         
         return (
             <div className="text-center py-16 max-w-7xl mx-auto mb-10">
-                <div className="text-6xl mb-4">⚠️</div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Unable to load books</h3>
                 <p className="text-gray-600 mb-4">
                     The server is currently unavailable.

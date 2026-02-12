@@ -6,6 +6,7 @@ import { getUserBooks, deleteBook } from "@/lib/api";
 import UploadBookModal from "./UploadBookModal";
 import EditBookModal from "./EditBookModal";
 import BookCard from "./BookCard";
+import { Plus } from "lucide-react";
 
 interface UserBooksProps {
   user: User;
@@ -63,7 +64,7 @@ const UserBooks = ({ user }: UserBooksProps) => {
           onClick={() => setShowUploadModal(true)}
           className="flex items-center gap-2 bg-primary-500 text-white px-6 py-3 rounded-lg hover:bg-primary-600 transition-all font-medium"
         >
-          <span>+</span>
+          <Plus size={20} />
           <span>Upload New Book</span>
         </button>
       </div>
@@ -97,7 +98,7 @@ const UserBooks = ({ user }: UserBooksProps) => {
               onClick={() => setShowUploadModal(true)}
               className="inline-flex items-center gap-2 bg-primary-500 text-white px-6 py-3 rounded-lg hover:bg-primary-600 transition-all font-medium"
             >
-              <span>+</span>
+              <Plus size={20} />
               <span>Upload Your First Book</span>
             </button>
           </div>

@@ -5,13 +5,9 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import DashboardSidebar from "./DashboardSidebar";
 import UserBooks from "./UserBooks";
-import UserProfile from "./UserProfile";
-
-type TabType = "books" | "profile";
 
 const DashboardLayout = () => {
   const { user, isLoading } = useAuth();
-  const [activeTab, setActiveTab] = React.useState<TabType>("books");
   const router = useRouter();
 
   React.useEffect(() => {
@@ -35,7 +31,7 @@ const DashboardLayout = () => {
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
-      <DashboardSidebar user={user} activeTab={activeTab} setActiveTab={setActiveTab} />
+      <DashboardSidebar user={user} />
 
       {/* Main Content */}
       <div className="flex-1 overflow-auto">
@@ -45,8 +41,7 @@ const DashboardLayout = () => {
             <p className="text-gray-600 mt-2">Welcome, {user.name || user.email}!</p>
           </div>
 
-          {activeTab === "books" && <UserBooks user={user} />}
-          {activeTab === "profile" && <UserProfile user={user} />}
+          <UserBooks user={user} />
         </div>
       </div>
     </div>

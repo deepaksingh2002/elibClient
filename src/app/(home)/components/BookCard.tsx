@@ -1,29 +1,46 @@
-import { Book } from '../../../types';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import { Book } from '@/types';
 
 const BookCard = ({ book }: { book: Book }) => {
     return (
-        <div className="flex gap-5 border p-5 shadow-md rounded">
-            <Image
-                src={book.coverImage}
-                alt={book.title}
-                width={0}
-                height={0}
-                sizes="100vw"
-                style={{ width: '50%', height: '12rem' }}
-            />
-            <div>
-                <h2 className="line-clamp-2 text-xl font-bold text-primary-600 text-balance">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+            {/* Cover Image */}
+            <div className="w-full h-48 bg-gray-200 relative overflow-hidden">
+                {book.coverImage ? (
+                    <Image
+                        src={book.coverImage}
+                        alt={book.title}
+                        fill
+                        className="object-cover"
+                    />
+                ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary-100 to-primary-200">
+                        <span className="text-gray-400">No Cover Image</span>
+                    </div>
+                )}
+            </div>
+
+            {/* Book Info */}
+            <div className="p-4">
+                <h3 className="font-bold text-lg text-gray-900 line-clamp-2 mb-2">
                     {book.title}
-                </h2>
-                <p className="font-bold text-primary-900 mt-1">{book.author.name}</p>
-                <Link
-                    href={`/book/${book._id}`}
-                    className="py-1 px-2 rounded border border-primary-500 mt-4 inline-block text-primary-500 font-medium text-sm
-                    hover:border-primary-100 hover:bg-primary-100 transition">
-                    Read more
+                </h3>
+                <p className="text-sm text-gray-600 line-clamp-2 mb-4">
+                    {book.description}
+                </p>
+
+                {/* Author */}
+                <p className="text-xs text-gray-500 mb-4">
+                    By: {book.author?.name || "Unknown"}
+                </p>
+
+                {/* Read More Button */}
+                <Link href={`/book/${book._id}`}>
+                    <button className="w-full py-2 px-3 bg-primary-50 text-primary-600 rounded hover:bg-primary-100 transition-all font-medium text-sm">
+                        Read More
+                    </button>
                 </Link>
             </div>
         </div>

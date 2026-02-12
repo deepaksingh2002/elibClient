@@ -4,20 +4,15 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { logoutUser } from "@/lib/api";
 import { User } from "@/types";
+import { BookOpen, LogOut, Home } from "lucide-react";
 
-type TabType = "books" | "profile";
+type TabType = "books";
 
 interface DashboardSidebarProps {
   user: User;
-  activeTab: TabType;
-  setActiveTab: (tab: TabType) => void;
 }
 
-const DashboardSidebar = ({
-  user,
-  activeTab,
-  setActiveTab,
-}: DashboardSidebarProps) => {
+const DashboardSidebar = ({ user }: DashboardSidebarProps) => {
   const router = useRouter();
 
   const handleLogout = () => {
@@ -29,10 +24,7 @@ const DashboardSidebar = ({
     {
       id: "books",
       label: "My Books",
-    },
-    {
-      id: "profile",
-      label: "Profile Settings",
+      icon: BookOpen,
     },
   ];
 
@@ -64,19 +56,18 @@ const DashboardSidebar = ({
 
       {/* Menu Items */}
       <nav className="flex-1 p-4">
-        {menuItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => setActiveTab(item.id as TabType)}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg mb-2 transition-all ${
-              activeTab === item.id
-                ? "bg-primary-50 text-primary-600 font-medium border-l-4 border-primary-500"
-                : "text-gray-600 hover:bg-gray-50"
-            }`}
-          >
-            <span>{item.label}</span>
-          </button>
-        ))}
+        {menuItems.map((item) => {
+          const IconComponent = item.icon;
+          return (
+            <div
+              key={item.id}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg mb-2 bg-primary-50 text-primary-600 font-medium border-l-4 border-primary-500"
+            >
+              <IconComponent size={20} />
+              <span>{item.label}</span>
+            </div>
+          );
+        })}
       </nav>
 
       {/* Logout Button */}
@@ -85,6 +76,7 @@ const DashboardSidebar = ({
           onClick={handleLogout}
           className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition-all font-medium"
         >
+          <LogOut size={20} />
           <span>Sign Out</span>
         </button>
       </div>
@@ -93,6 +85,7 @@ const DashboardSidebar = ({
       <div className="p-4 border-t border-gray-200">
         <Link href="/">
           <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-50 transition-all font-medium">
+            <Home size={20} />
             <span>Back to Home</span>
           </button>
         </Link>

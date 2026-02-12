@@ -5,6 +5,7 @@ import React from 'react';
 import { logoutUser } from '@/lib/api';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
+import { LayoutDashboard } from 'lucide-react';
 
 const Navbar = () => {
     const { user, isLoading, isAuthenticated } = useAuth();
@@ -37,7 +38,8 @@ const Navbar = () => {
                     {!isLoading && isAuthenticated && user ? (
                         <>
                             <Link href={'/dashboard'}>
-                                <button className="h-10 rounded-md bg-primary-50 px-4 py-2 text-sm font-medium text-primary-500 transition-all hover:bg-primary-100">
+                                <button className="h-10 rounded-md bg-primary-50 px-4 py-2 text-sm font-medium text-primary-500 transition-all hover:bg-primary-100 flex items-center gap-2">
+                                    <LayoutDashboard size={18} />
                                     Dashboard
                                 </button>
                             </Link>
