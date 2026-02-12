@@ -4,6 +4,9 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_URL
   ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/users`
   : "http://localhost:5000/api/v1/users";
 
+// Log API configuration for debugging
+console.log("API_BASE_URL:", API_BASE_URL);
+
 // Helper function to decode JWT and extract user info
 function decodeJWT(token: string): { sub: string } | null {
   try {
@@ -29,6 +32,7 @@ export async function registerUser(
 ): Promise<AuthResponse> {
   try {
     console.log("Registering user with:", { name, email });
+    console.log("Using API URL:", `${API_BASE_URL}/register`);
     const response = await fetch(`${API_BASE_URL}/register`, {
       method: "POST",
       headers: {
@@ -78,6 +82,8 @@ export async function registerUser(
         _id: decodeJWT(token)?.sub || "",
       };
       localStorage.setItem("user", JSON.stringify(userInfo));
+      // Trigger auth change event for real-time navbar updates
+      window.dispatchEvent(new Event('auth-change'));
     }
 
     return {
@@ -92,9 +98,23 @@ export async function registerUser(
     };
   } catch (error) {
     console.error("Register error:", error);
+    
+    // Better error messages for different failure types
+    let errorMessage = "Failed to connect to server";
+    
+    if (error instanceof TypeError) {
+      if (error.message.includes("fetch")) {
+        errorMessage = `Network error: Unable to reach ${API_BASE_URL}/register. Make sure backend is running.`;
+      } else {
+        errorMessage = error.message;
+      }
+    } else if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    
     return {
       success: false,
-      message: error instanceof Error ? error.message : "An error occurred",
+      message: errorMessage,
     };
   }
 }
@@ -105,6 +125,8 @@ export async function loginUser(
 ): Promise<AuthResponse> {
   try {
     console.log("Logging in user:", { email });
+    console.log("Using API URL:", `${API_BASE_URL}/login`);
+    
     const response = await fetch(`${API_BASE_URL}/login`, {
       method: "POST",
       headers: {
@@ -155,6 +177,8 @@ export async function loginUser(
         _id: decoded?.sub || "",
       };
       localStorage.setItem("user", JSON.stringify(userInfo));
+      // Trigger auth change event for real-time navbar updates
+      window.dispatchEvent(new Event('auth-change'));
     }
 
     return {
@@ -169,9 +193,23 @@ export async function loginUser(
     };
   } catch (error) {
     console.error("Login error:", error);
+    
+    // Better error messages for different failure types
+    let errorMessage = "Failed to connect to server";
+    
+    if (error instanceof TypeError) {
+      if (error.message.includes("fetch")) {
+        errorMessage = `Network error: Unable to reach ${API_BASE_URL}/login. Make sure backend is running.`;
+      } else {
+        errorMessage = error.message;
+      }
+    } else if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    
     return {
       success: false,
-      message: error instanceof Error ? error.message : "An error occurred",
+      message: errorMessage,
     };
   }
 }

@@ -35,7 +35,10 @@ const LoginForm = () => {
 
       if (result.success) {
         console.log("Login successful, redirecting...");
-        router.push("/");
+        // Add small delay to ensure localStorage is set before redirect
+        setTimeout(() => {
+          router.push("/dashboard");
+        }, 100);
       } else {
         setError(result.message);
         setLoading(false);

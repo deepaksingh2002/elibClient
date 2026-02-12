@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
-import { getStoredUser, getStoredToken } from "@/lib/api";
-import { User } from "@/types";
+import { useAuth } from "@/hooks/useAuth";
 import DashboardSidebar from "./DashboardSidebar";
 import UserBooks from "./UserBooks";
 import UserProfile from "./UserProfile";
@@ -11,25 +10,17 @@ import UserProfile from "./UserProfile";
 type TabType = "books" | "profile";
 
 const DashboardLayout = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [activeTab, setActiveTab] = useState<TabType>("books");
-  const [loading, setLoading] = useState(true);
+  const { user, isLoading } = useAuth();
+  const [activeTab, setActiveTab] = React.useState<TabType>("books");
   const router = useRouter();
 
-  useEffect(() => {
-    const token = getStoredToken();
-    const storedUser = getStoredUser();
-
-    if (!token || !storedUser) {
+  React.useEffect(() => {
+    if (!isLoading && !user) {
       router.push("/login");
-      return;
     }
+  }, [isLoading, user, router]);
 
-    setUser(storedUser);
-    setLoading(false);
-  }, [router]);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-2xl font-bold text-primary-500">Loading...</div>

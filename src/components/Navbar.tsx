@@ -1,23 +1,19 @@
 "use client";
 
 import Link from 'next/link';
-import React, { useState, useEffect } from 'react';
-import { getStoredUser, logoutUser } from '@/lib/api';
+import React from 'react';
+import { logoutUser } from '@/lib/api';
 import { useRouter } from 'next/navigation';
-import { User } from '@/types';
+import { useAuth } from '@/hooks/useAuth';
 
 const Navbar = () => {
-    const [user, setUser] = useState<User | null>(null);
+    const { user, isLoading, isAuthenticated } = useAuth();
     const router = useRouter();
-
-    useEffect(() => {
-        const storedUser = getStoredUser();
-        setUser(storedUser);
-    }, []);
 
     const handleLogout = () => {
         logoutUser();
-        setUser(null);
+        // Trigger auth change event for real-time updates
+        window.dispatchEvent(new Event('auth-change'));
         router.push('/');
     };
 
@@ -38,24 +34,24 @@ const Navbar = () => {
                     </Link>
                 </div>
                 <div className="flex items-center gap-4">
-                    {user ? (
+                    {!isLoading && isAuthenticated && user ? (
                         <>
                             <Link href={'/dashboard'}>
                                 <button className="h-10 rounded-md bg-primary-50 px-4 py-2 text-sm font-medium text-primary-500 transition-all hover:bg-primary-100">
                                     📊 Dashboard
                                 </button>
                             </Link>
-                            <span className="text-sm text-gray-700 font-medium">
+                            <span className="text-sm text-gray-700 font-medium max-w-[150px] truncate">
                                 {user.name || user.email}
                             </span>
                             <button 
                                 onClick={handleLogout}
-                                className="h-10 rounded-md bg-red-500 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-red-600 active:bg-red-700"
+                                className="h-10 rounded-md bg-red-500 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-red-600 active:bg-red-700 whitespace-nowrap"
                             >
                                 Sign out
                             </button>
                         </>
-                    ) : (
+                    ) : !isLoading ? (
                         <>
                             <Link href={'/login'}>
                                 <button className="h-10 rounded-md border border-primary-500 px-4 py-2 text-sm font-medium text-primary-500 transition-all hover:border-primary-600 hover:bg-primary-50 active:bg-primary-100">
@@ -68,6 +64,8 @@ const Navbar = () => {
                                 </button>
                             </Link>
                         </>
+                    ) : (
+                        <div className="text-sm text-gray-500">Loading...</div>
                     )}
                 </div>
             </div>
