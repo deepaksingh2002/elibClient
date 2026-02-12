@@ -1,0 +1,65 @@
+"use client";
+
+import Image from "next/image";
+import { Book } from "@/types";
+
+interface BookCardProps {
+  book: Book;
+  onEdit: () => void;
+  onDelete: () => void;
+}
+
+const BookCard = ({ book, onEdit, onDelete }: BookCardProps) => {
+  return (
+    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+      {/* Cover Image */}
+      <div className="w-full h-48 bg-gray-200 relative overflow-hidden">
+        {book.coverImage ? (
+          <Image
+            src={book.coverImage}
+            alt={book.title}
+            fill
+            className="object-cover"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary-100 to-primary-200">
+            <span className="text-4xl">📖</span>
+          </div>
+        )}
+      </div>
+
+      {/* Book Info */}
+      <div className="p-4">
+        <h3 className="font-bold text-lg text-gray-900 line-clamp-2 mb-2">
+          {book.title}
+        </h3>
+        <p className="text-sm text-gray-600 line-clamp-2 mb-4">
+          {book.description}
+        </p>
+
+        {/* Author */}
+        <p className="text-xs text-gray-500 mb-4">
+          By: {book.author?.name || "Unknown"}
+        </p>
+
+        {/* Actions */}
+        <div className="flex gap-2">
+          <button
+            onClick={onEdit}
+            className="flex-1 py-2 px-3 bg-primary-50 text-primary-600 rounded hover:bg-primary-100 transition-all font-medium text-sm"
+          >
+            ✏️ Edit
+          </button>
+          <button
+            onClick={onDelete}
+            className="flex-1 py-2 px-3 bg-red-50 text-red-600 rounded hover:bg-red-100 transition-all font-medium text-sm"
+          >
+            🗑️ Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default BookCard;
