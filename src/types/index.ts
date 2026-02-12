@@ -4,6 +4,7 @@ export type Book = {
     description: string;
     coverImage: string;
     file: string;
+    genre: string;
     author: Author;
     createdAt?: string;
     updatedAt?: string;
@@ -30,6 +31,7 @@ export type AuthResponse = {
 
 export type CreateBookPayload = {
     title: string;
+    genre: string;
     description: string;
     coverImage?: File;
     file?: File;
@@ -37,6 +39,7 @@ export type CreateBookPayload = {
 
 export type UpdateBookPayload = {
     title?: string;
+    genre?: string;
     description?: string;
     coverImage?: File;
     file?: File;

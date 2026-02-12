@@ -19,6 +19,7 @@ const EditBookModal = ({
 }: EditBookModalProps) => {
   const [title, setTitle] = useState(book.title);
   const [description, setDescription] = useState(book.description);
+  const [genre, setGenre] = useState(book.genre);
   const [coverImage, setCoverImage] = useState<File | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState("");
@@ -29,6 +30,7 @@ const EditBookModal = ({
   useEffect(() => {
     setTitle(book.title);
     setDescription(book.description);
+    setGenre(book.genre);
     setCoverPreview(book.coverImage);
     setCoverImage(null);
     setFile(null);
@@ -86,12 +88,17 @@ const EditBookModal = ({
       setError("Description is required");
       return;
     }
+    if (!genre.trim()) {
+      setError("Genre is required");
+      return;
+    }
 
     setLoading(true);
 
     const result = await updateBook(book._id, {
       title,
       description,
+      genre,
       coverImage: coverImage || undefined,
       file: file || undefined,
     });
@@ -161,6 +168,20 @@ const EditBookModal = ({
               rows={4}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               placeholder="Enter book description"
+            />
+          </div>
+
+          {/* Genre */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Genre *
+            </label>
+            <input
+              type="text"
+              value={genre}
+              onChange={(e) => setGenre(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              placeholder="Enter book genre (e.g., Fiction, Mystery, Science Fiction)"
             />
           </div>
 

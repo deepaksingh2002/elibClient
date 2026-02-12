@@ -27,8 +27,13 @@ const BookCard = ({ book }: { book: Book }) => {
                 <h3 className="font-bold text-lg text-gray-900 line-clamp-2 mb-2">
                     {book.title}
                 </h3>
-                <p className="text-sm text-gray-600 line-clamp-2 mb-4">
+                <p className="text-sm text-gray-600 line-clamp-2 mb-2">
                     {book.description}
+                </p>
+
+                {/* Genre */}
+                <p className="text-xs bg-primary-50 text-primary-600 inline-block px-2 py-1 rounded mb-3">
+                    {book.genre}
                 </p>
 
                 {/* Author */}

@@ -254,6 +254,7 @@ export async function createBook(
     const formData = new FormData();
     formData.append("title", payload.title);
     formData.append("description", payload.description);
+    formData.append("genre", payload.genre);
     
     // Append files directly - File objects already have proper blob handling
     if (payload.coverImage) {
@@ -332,6 +333,7 @@ export async function updateBook(
 
     const formData = new FormData();
     if (payload.title) formData.append("title", payload.title);
+    if (payload.genre) formData.append("genre", payload.genre);
     if (payload.description) formData.append("description", payload.description);
     if (payload.coverImage) {
       const coverImageBlob = new Blob([payload.coverImage], { type: payload.coverImage.type });

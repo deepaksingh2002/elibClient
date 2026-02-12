@@ -36,7 +36,12 @@ const SingleBookPage = async ({ params }: { params: Promise<{ bookId: string }> 
         <div className="mx-auto grid max-w-6xl grid-cols-3 gap-10 px-5 py-10">
             <div className="col-span-2 pr-16 text-primary-950">
                 <h2 className="mb-5 text-5xl font-bold leading-[1.1]">{book.title}</h2>
-                <span className="font-semibold">by {book.author.name}</span>
+                <div className="flex items-center gap-4 mb-4">
+                    <span className="font-semibold">by {book.author.name}</span>
+                    <span className="text-sm bg-primary-100 text-primary-700 px-3 py-1 rounded">
+                        {book.genre}
+                    </span>
+                </div>
                 <p className="mt-5 text-lg leading-8">{book.description}</p>
                 <DownloadButton fileLink={book.file} />
             </div>
