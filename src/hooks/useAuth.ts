@@ -21,17 +21,13 @@ export function useAuth() {
   }, []);
 
   useEffect(() => {
-    // Load on mount
     loadAuthState();
 
-    // Listen for storage changes from other tabs/windows
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === "authToken" || e.key === "user") {
         loadAuthState();
       }
     };
-
-    // Custom event listener for same-tab changes
     const handleAuthChange = () => {
       loadAuthState();
     };

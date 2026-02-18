@@ -45,11 +45,10 @@ const RegisterForm = () => {
 
     try {
       const result = await registerUser(name, email, password);
-      console.log("Register result:", result);
+      //console.log("Register result:", result);
 
       if (result.success) {
-        console.log("Registration successful, redirecting...");
-        // Add small delay to ensure localStorage is set before redirect
+        //console.log("Registration successful, redirecting...");
         setTimeout(() => {
           router.push("/dashboard");
         }, 100);
@@ -58,7 +57,7 @@ const RegisterForm = () => {
         setLoading(false);
       }
     } catch (err) {
-      console.error("Unexpected error:", err);
+      //console.error("Unexpected error:", err);
       setError("An unexpected error occurred");
       setLoading(false);
     }

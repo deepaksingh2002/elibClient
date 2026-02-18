@@ -145,7 +145,7 @@ const UploadBookModal = ({
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg  focus:border-transparent text-black"
               placeholder="Enter book title"
             />
           </div>
@@ -159,14 +159,14 @@ const UploadBookModal = ({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg text-black focus:border-transparent"
               placeholder="Enter book description"
             />
           </div>
 
           {/* Cover Image */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-800 mb-2">
               Cover Image * (Max 10MB)
             </label>
             <div className="flex gap-4">
@@ -183,7 +183,7 @@ const UploadBookModal = ({
                 type="file"
                 accept="image/*"
                 onChange={handleCoverImageChange}
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:border-transparent"
               />
             </div>
             {coverImage && (
@@ -202,7 +202,7 @@ const UploadBookModal = ({
               type="file"
               accept=".pdf"
               onChange={handleFileChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg  focus:border-transparent"
             />
             {file && (
               <p className="text-xs text-gray-500 mt-2">

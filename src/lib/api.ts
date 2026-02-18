@@ -255,7 +255,6 @@ export async function createBook(
     formData.append("title", payload.title);
     formData.append("description", payload.description);
     
-    // Append files directly - File objects already have proper blob handling
     if (payload.coverImage) {
       formData.append("coverImage", payload.coverImage);
     }
@@ -416,7 +415,6 @@ export async function deleteBook(bookId: string): Promise<BookResponse> {
       data = text ? JSON.parse(text) : { success: true };
     } catch (parseError) {
       console.error("Failed to parse response:", parseError);
-      // If we can't parse but status is ok, consider it success
       if (response.ok) {
         return {
           success: true,
